@@ -15,7 +15,7 @@ AIとも遊べる、うんちゆ回避チキンレースゲーム。
 
 ## 概要
 
-「んーこ💩んこ　んこ　うんちゆ」は、3人で順番に「んこ」「んーこ」「んーーこ」「長んこ」などを出しながら、個人腹圧・部屋の空気・場うんち蓄積を管理して生き残るゲームです。
+「んーこ💩んこ　んこ　うんちゆ！」は、3人で順番に「んこ」「んーこ」「んーーこ」「長んこ」などを出しながら、個人腹圧・部屋の空気・場うんち蓄積を管理して生き残るゲームです。
 v29では、これまで混ざっていた「個人うんち」と「場うんち」を分離しています。個人うんちは本人の減点として抱えるもの、場うんちは部屋全体が爆発する敗北トリガーです。
 
 複数のAIを対戦相手として遊べます。Gemini、ChatGPT、Claude、Grokなどに手番ログを貼り付けながら進行します。
@@ -38,7 +38,7 @@ HTML単体で動作します。ブラウザでhtmlを開けば遊べます。サ
 
 3人プレイです。P1、P2、P3の名前は画面内で変更できます。標準では `Gemini`、`Player2`、`Player3` になっています。
 
-基本入力は「んーこ」ボタンの長押しです。押す長さによって「んこ」「んーこ」「んーーこ」「長んこ」になります。毎ターン、裏で4種類の入力に「出る出る」「ひっこみ」「普通」「普通」が割り当てられます。どの入力がどれなのかは見えません。
+基本入力は「んーこ」ボタンの長押しです。押す長さによって「んこ」「んーこ」「んーーこ」「長んこ」になります。毎ターン、裏で4種類の入力に「出る出る」「ひっこみ」「通常通り」「通常通り」が割り当てられます。どの入力がどれなのかは見えません。
 
 個人腹圧は自分の入力で上がったり下がったりします。部屋の空気は全員の入力や一部イベントで重くなります。判定は、個人腹圧に部屋の空気補正をかけた危険度が限界を超えたら「個人うんちゆ！💩」です。
 
@@ -96,8 +96,15 @@ AI貼り付けログを軽量化しました。毎ターンルール全文を貼
 
 ## ファイル
 
-メインファイルは `nko_belly_air_joker_v31.html` です。このREADMEは `README_nko_v29.md` です。
+メインファイルは `nko_belly_air_joker_v31.html` です。
 
+## 📢 現在の調整と不具合
+
+### 🐛 英語バージョンにおいて、長んこを叫び続けると、んこボタンが右に逃げていく不具合が発生中です。
+
+### ⚖️バランス調整中
+現在全モードにおいて、想定されている「んこ」具合とうんちゆ！によるちょうどいいお腹具合を探っているところです。
+バランス調整中によりご不便（とお腹の限界）をおかけしますが、ちょうどよいバランスになるまで今しばらくお待ちください！💩
 
 ---
 
@@ -278,6 +285,15 @@ Repository homepage:
 
 `index.html`
 
-README:
+## 📢 Current Status: Balancing Individual & Field Poop Metrics (In Progress)
 
-`README.md`
+### 🐛 Known Issue in English Version
+* **Symptom:** When you **hold down (long-press)** the button to extend your **"N-ko"** shout, the **"Poop"** button physically drifts and flees to the right side of the screen. 
+* **Status:** This issue has **NOT** been fixed or addressed yet. We are currently leaving it as-is.
+
+### ⚖️ Under Construction: Tuning the "Belly Pressure" Balance
+We are currently in the middle of fine-tuning the internal formulas for **"Belly Pressure"**.
+* **Status:** **Active Adjustments Underway (Not yet finalized).**
+* **Our Goal:** We are currently tweaking and adjusting the balance between **"Individual Poop" (personal penalties)** and **"Field Poop" (room-wide explosions)** so that all game modes achieve the perfect, most fun level of tension for players.
+
+Thank you for your patience while we adjust the pressure! 💩
