@@ -4,6 +4,14 @@
 
 AIとも遊べる、うんちゆ回避チキンレースゲーム。
 
+## Language / 言語
+
+* 🇯🇵 [日本語](#日本語)
+* 🇺🇸 [English](#english)
+
+---
+
+# 日本語
 
 ## 概要
 
@@ -85,6 +93,190 @@ v29では、個人うんちと場うんちを分離しました。個人うん�
 ジョーカー命中・不発は、仕掛け人を伏せたまま直近小事件として公開されるようにしました。
 
 AI貼り付けログを軽量化しました。毎ターンルール全文を貼らなくても遊べるように、現在盤面中心のコピーを追加しています。
+
+
+---
+
+# English
+
+## Overview
+
+# NKO💩
+
+> NKO, NKO, UNCHIYU!
+
+An AI-compatible party game about avoiding UNCHIYU.
+
+## Overview
+
+**NKO💩** is a three-player chicken-race party game where players take turns choosing actions such as **NKO**, **N-KO**, **NN-KO**, and **Long NKO** while managing personal pressure, room atmosphere, and shared UNCHI accumulation.
+
+Players can compete against humans or AI opponents such as ChatGPT, Gemini, Claude, and Grok by copying game logs into AI chats and using their responses as actions.
+
+The game runs entirely in the browser. No installation, server, or external libraries are required.
+
+## Core Concepts
+
+### Dirty Water
+
+The shared HP of the game.
+
+If Dirty Water reaches 0%, the game ends.
+
+Most damage comes from Shared UNCHI explosions.
+
+### N-KO Score
+
+Your positive score.
+
+Longer and riskier actions generally earn more points.
+
+### Personal UNCHI
+
+An individual penalty.
+
+If your personal pressure exceeds its limit, you trigger a Personal UNCHI event and receive penalty points.
+
+The same amount is also added to the Shared UNCHI accumulation.
+
+Personal UNCHI does not directly damage Dirty Water.
+
+### Shared UNCHI
+
+The primary defeat trigger.
+
+When Shared UNCHI accumulation reaches its limit, a Shared UNCHI event occurs.
+
+It damages Dirty Water and may determine the losing player.
+
+### Chicken Penalty
+
+A small penalty for repeatedly choosing overly safe actions.
+
+Playing cautiously can keep you alive, but it reduces your final score.
+
+## Basic Rules
+
+The game is designed for three players.
+
+Player names can be customized.
+
+The primary action is performed by holding the NKO button.
+
+Different hold lengths produce different actions:
+
+* NKO
+* N-KO
+* NN-KO
+* Long NKO
+
+Each turn secretly assigns hidden outcomes to these actions.
+
+Players never know which choice is currently safe or dangerous.
+
+Personal pressure changes based on your actions.
+
+Room atmosphere changes based on the actions of all players.
+
+If the resulting danger exceeds the limit, a Personal UNCHI event occurs.
+
+A Personal UNCHI event does not immediately eliminate a player.
+
+Instead, it applies penalty points and increases Shared UNCHI accumulation.
+
+When Shared UNCHI reaches 100%, a Shared UNCHI event is triggered.
+
+## Special Actions
+
+### Tea☕
+
+Available twice per player.
+
+Cannot be used together with NKO.
+
+Skips the action requirement but slightly increases personal pressure.
+
+### Silent Fart💨
+
+Available once per player.
+
+Cannot be used together with NKO.
+
+Reduces personal pressure but significantly worsens the room atmosphere.
+
+### UNCHI Joker💣
+
+Available once per player.
+
+After performing at least one action during your turn, you may secretly plant a Joker.
+
+One of the next player's possible NKO actions becomes trapped.
+
+If the trap succeeds, the target gains pressure and the room atmosphere worsens.
+
+If it fails, the penalty affects the player who planted it.
+
+The identity of the Joker user remains hidden.
+
+## Anti-Stalling Rules
+
+Repeatedly escaping with only NKO during dangerous situations builds a cowardice penalty.
+
+If every player chooses only NKO for an entire round, the room atmosphere deteriorates, pressure rises, and Shared UNCHI accumulation increases.
+
+Playing safely is possible, but relying on it for too long will eventually become a losing strategy.
+
+## Winning and Scoring
+
+Shared UNCHI events are the primary loss condition.
+
+Among players with the same Shared UNCHI status, ranking is determined by score.
+
+Final score is approximately:
+
+N-KO Score − Personal UNCHI Penalty − Chicken Penalty − Shared UNCHI Penalty
+
+Risk and survival must be balanced carefully.
+
+## Playing With AI
+
+At the start of the game, send the rules or setup prompt to each AI participant.
+
+After that, use the lightweight turn summary instead of reposting the full rules every turn.
+
+The recommended setup is one chat conversation per AI player.
+
+This keeps context size small and prevents AIs from reacting to outdated turns.
+
+## Recommended Setup
+
+1. Open a separate chat for each AI participant.
+2. Send the initial rules once.
+3. Use lightweight turn summaries for future turns.
+4. Paste AI responses back into the game.
+5. Continue until somebody triggers UNCHIYU.
+
+## Files
+
+Japanese version:
+
+`nko_belly_air_joker_v31_public.html`
+
+English version:
+
+`nko_belly_air_joker_v31_english.html`
+
+Discord version:
+
+`nko_belly_air_joker_v31_discord.html`
+
+Repository homepage:
+
+`index.html`
+
+README:
+
+`README.md`
 
 ## ファイル
 
