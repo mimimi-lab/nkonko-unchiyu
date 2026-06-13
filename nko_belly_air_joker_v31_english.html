@@ -235,12 +235,12 @@
       transition: transform .05s, filter .12s;
       position: relative;
       isolation: isolate;
-      overflow: visible;
-      background: radial-gradient(ellipse 94% 48% at 50% 72%, #7a492d 0%, #653a24 72%, transparent 73%);
+      overflow: hidden;
+      background: radial-gradient(ellipse 100% 52% at 50% 78%, #6b3d20 0%, #5a3018 68%, transparent 70%);
       border-radius: 0;
-      filter: drop-shadow(0 8px 0 #3b2417);
+      filter: drop-shadow(0 8px 0 #2a1508);
       box-shadow: none;
-      padding-top: 62px;
+      padding-top: 58px;
     }
 
     #nkoButton::before,
@@ -253,30 +253,31 @@
 
     #nkoButton::before {
       z-index: 0;
-      width: 78%;
-      height: 54%;
-      left: 10%;
-      top: 7%;
-      border-radius: 55% 45% 48% 42%;
-      background: linear-gradient(160deg, #a76d45, #7c492e);
-      transform: rotate(-5deg);
+      width: 72%;
+      height: 50%;
+      left: 14%;
+      top: 10%;
+      border-radius: 50% 50% 45% 55% / 60% 55% 45% 40%;
+      background: radial-gradient(ellipse at 40% 40%, #b87a4a, #8b5630 60%, #6b3d20);
+      transform: rotate(-3deg);
     }
 
     #nkoButton::after {
       z-index: 1;
-      width: 43%;
-      height: 36%;
-      left: 44%;
-      top: -12%;
-      border-radius: 62% 38% 55% 45%;
-      background: linear-gradient(155deg, #bd8252, #95603d);
-      transform: rotate(11deg);
+      width: 36%;
+      height: 34%;
+      left: 40%;
+      top: -8%;
+      border-radius: 50% 60% 40% 50% / 70% 70% 30% 40%;
+      background: radial-gradient(ellipse at 45% 35%, #d4955e, #b07040 55%, #8b5630);
+      transform: rotate(15deg) scaleX(0.85);
     }
 
     #nkoButtonLabel {
       position: relative;
       z-index: 2;
       display: block;
+      white-space: nowrap;
     }
 
     #nkoButton:active,
@@ -904,19 +905,20 @@
         },
         maniac: {
           name: "Maniac Mode",
-          limit: 112,
-          startBelly: 24,
+          limit: 80,
+          startBelly: 60,
           startAir: 14,
           nkoScoreMul: 1.05,
-          bellyPushMul: 0.92,
+          bellyPushMul: 0.80,
           bellyPullMul: 1.00,
           airMul: 0.82,
-          airRiskDenom: 240,
-          longDecay: 0.030,
-          repeatDecay: 0.060,
-          crazyStart: 8,
-          airDecay: 0.976,
-          waterDamageMul: 0.070
+          airRiskDenom: 380,
+          longDecay: 0.060,
+          repeatDecay: 0.090,
+          crazyStart: 6,
+          airDecay: 0.90,
+          fieldNoiseMul: 1.2,
+          fieldDamage: 30
         }
       };
 
@@ -979,11 +981,11 @@
         return a;
       }
       function makeRoleMap() {
-        const classes = ["tiny", "short1", "short2", "long"];
-        const roles = shuffle(["push_big", "pull", "normal", "normal"]);
-        const map = {};
-        classes.forEach((cls, i) => map[cls] = roles[i]);
-        return map;
+        if (modeKey === "maniac") {
+          return { long: "push_big", tiny: "normal", short1: "normal", short2: "normal" };
+        }
+        const shorts = shuffle(["tiny", "short1", "short2"]);
+        return { long: "push_big", [shorts[0]]: "pull", [shorts[1]]: "normal", [shorts[2]]: "normal" };
       }
       function word(dashes, closed = true) {
         const line = "N".repeat(Math.max(1, dashes + 1));
@@ -1649,6 +1651,7 @@
 
         let bellyDelta = 0;
         let score = Math.max(1, Math.floor((3 + Math.min(dashes, 8) * 4 + currentTurnParts.length * 2) * cfg().nkoScoreMul));
+        if (dashes >= 3) score = Math.max(1, Math.floor(score * 0.5));
 
         if (role === "push_big") {
           bellyDelta = (base * 1.25 * weight + jitter(3, 7)) * cfg().bellyPushMul * damp;
@@ -1679,7 +1682,7 @@
         const d = dangerFor(p);
         accidentCount++;
         const over = Math.max(0, d - cfg().limit);
-        const unchiPoint = clamp(8 + over * 0.35 + Math.min(16, currentTurnParts.join("").length * 0.08) + Math.max(0, p.belly - 50) * 0.05, 8, 34);
+        const unchiPoint = clamp(8 + over * 0.35 + Math.min(16, currentTurnParts.join("").length * 0.08) + Math.max(0, p.belly - 50) * 0.05, 8, 34) * 1.5;
         p.unchiScore += unchiPoint;
         p.accidents += 1;
         p.belly = clamp(cfg().startBelly * 0.82, 12, 42);
