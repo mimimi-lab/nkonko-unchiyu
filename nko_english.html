@@ -1578,7 +1578,7 @@
     if (p.fartLeft > 0 && currentTurnParts.length === 0) candidates.push("Silent Fart 💨");
     if (p.jokerLeft > 0 && currentTurnParts.length > 0) candidates.push("add Poop Joker 💣");
     else if (p.jokerLeft > 0) candidates.push("add Poop Joker 💣 after an NKO input");
-    return `Options: ${candidates.join(" / ")}`;
+    return `Options: ${candidates.join(" / ")}\nNKO input style: write NKO, NNKO, NNNKO, or a longer Long NKO such as NNNNNKO. More N means holding the "nnnn" sound longer before "KO".`;
   }
   function unavailableActionText() {
     const p = players[active];
@@ -1625,7 +1625,7 @@
       `Active mode tuning: ${activeModeRuleText()}`,
       "",
       "Rules:",
-      "- Three-player game. Hold the button for NKO, NNKO, NNNKO, or Long NKO. Longer calls score more, but raise pressure more.",
+      '- Three-player game. Say NKO, NNKO, NNNKO, or Long NKO. More N means holding the "nnnn" sound longer before "KO". Longer calls score more, but raise pressure more.',
       "- Party Mode is short and volatile, with more accidents and faster shared-poop buildup.",
       "- Standard Mode aims for a normal balance, often ending around 18-22 turns.",
       "- Maniac Mode lowers Long NKO scoring and makes Personal Poop harsher. It hurts more, but shared-poop buildup is a bit calmer.",
@@ -1634,7 +1634,7 @@
       "- Long NKO is always Push. Among the three short calls (NKO / NNKO / NNNKO), exactly one is Pull and the other two are Normal. You cannot see which short call is Pull.",
       "- Personal Pressure rises from your own inputs. Room Air and Shared Poop rise from everyone's inputs and accidents.",
       "- Personal Poop triggers when Personal Pressure x (1 + Room Air modifier) exceeds the limit. It becomes that player's penalty and also adds to Shared Poop.",
-      "- Long NKO (3+ dashes) uses the active mode's Long NKO score multiplier. High risk, low return.",
+      "- Long NKO means holding the N sound for a very long time, for example NNNNNKO. It uses the active mode's Long NKO score multiplier. High risk, low return.",
       "- Tea ☕ can be used twice per player. It skips input, gives 0 points, and slightly raises Pressure. No consecutive use.",
       "- If everyone keeps using only short NKO (NKO / NNKO) or tea-only quiet turns, room ventilation may trigger. Late-game Shared Poop does not ventilate.",
       "- Silent Fart 💨 can be used once per player. It lowers your Pressure, slightly raises everyone else's Pressure, and worsens Room Air.",
