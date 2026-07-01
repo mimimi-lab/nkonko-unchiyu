@@ -24,15 +24,17 @@ HTML単体で動作します。ブラウザでhtmlを開けば遊べます。サ
 
 ## 基本用語
 
-**汚水** はゲーム全体のHPです。0%になるとゲーム終了です。v29では、基本的に場うんち爆発で固定ダメージを受けます。
+
+**水洗力** はゲーム全体のHPです。0%になるとゲーム終了です。現行版では、基本的に場うんち爆発で固定ダメージを受けます。
 
 **んーこ得点** はプラス得点です。長めの入力や危険な場面で行動を通すほど伸びます。名前はそのまま「んーこ得点」です。
 
-**個人うんち** は本人の減点です。個人腹圧が限界を超えると発生し、本人に個人うんち減点が乗ります。同時に、その量が場うんち蓄積へ追加されます。個人うんちは汚水を直接削りません。
+**個人うんち** は本人の減点です。個人腹圧が限界を超えると発生し、本人に個人うんち減点が乗ります。同時に、その量が場うんち蓄積へ追加されます。個人うんちは水洗力を直接削りません。
 
-**場うんち** は通常ルールの敗北トリガーです。場うんち蓄積が限界を超えると発生し、引いた人が負け候補になります。場うんちは汚水に固定ダメージを与え、ターンを強制終了します。
+**場うんち** は通常ルールの敗北トリガーです。場うんち蓄積が限界を超えると発生し、引いた人が負け候補になります。場うんちは水洗力に固定ダメージを与え、ターンを強制終了します。
 
 **チキン減点** は、危険な場面で「んこ」だけで逃げ続けた時などに増える軽い減点です。生存はできますが、総合点は下がります。
+
 
 ## 基本ルール
 
@@ -96,7 +98,7 @@ AI貼り付けログを軽量化しました。毎ターンルール全文を貼
 
 ## ファイル
 
-メインファイルは `nko_belly_air_joker_v31.html` です。
+メインファイルは `nko_belly_air_joker_v33_public.html` です。
 
 ## 📢 現在の調整と不具合
 
@@ -128,11 +130,11 @@ The game runs entirely in the browser. No installation, server, or external libr
 
 ## Core Concepts
 
-### Dirty Water
+### Flush Power
 
 The shared HP of the game.
 
-If Dirty Water reaches 0%, the game ends.
+If Flush Power reaches 0%, the game ends.
 
 Most damage comes from Shared UNCHI explosions.
 
@@ -142,21 +144,21 @@ Your positive score.
 
 Longer and riskier actions generally earn more points.
 
-### Personal UNCHI
+### Personal Poop!UNCHIYU
 
 An individual penalty.
 
-If your personal pressure exceeds its limit, you trigger a Personal UNCHI event and receive penalty points.
+If your personal pressure exceeds its limit, you trigger a Personal Poop UNCHIYU event and receive penalty points.
 
-The same amount is also added to the Shared UNCHI accumulation.
+The same amount is also added to the Shared POOP UNCHIYU accumulation.
 
-Personal UNCHI does not directly damage Dirty Water.
+Personal POOP UNCHIYU does not directly damage Flush power.
 
-### Shared UNCHI
+### Shared Poop! UNCHIYU
 
 The primary defeat trigger.
 
-When Shared UNCHI accumulation reaches its limit, a Shared UNCHI event occurs.
+When Shared POOP UNCHIYU accumulation reaches its limit, a Shared UNCHI event occurs.
 
 It damages Dirty Water and may determine the losing player.
 
@@ -292,7 +294,7 @@ Repository homepage:
 * **Status:** **Fixed.**
 
 ### ⚖️ Balance Adjustments
-**In v31, the mind games have been enhanced compared to the previous version.**
+**In v33, the mind games have been enhanced compared to the previous version.**
 
 Currently, across all modes, we are still exploring the sweet spot between the ideal "N-ko" intensity and the perfect stomach condition brought on by "Unchiyu!". 
 We apologize for any inconvenience (and for pushing your stomachs to the limit) while we work on these balance adjustments, but we are continuously fine-tuning things to reach the perfect balance! 💩
