@@ -937,6 +937,11 @@
           <div class="sc-accbody">
             <div class="sc-subhead">Use every turn</div>
             <div class="sc-toggrid">
+              <button class="sc-tog on" data-talk-style="long"><span class="led"></span>Long replies</button>
+              <button class="sc-tog" data-talk-style="normal"><span class="led"></span>Normal replies</button>
+              <button class="sc-tog" data-talk-style="short"><span class="led"></span>Short replies</button>
+            </div>
+            <div class="sc-toggrid">
               <button class="sc-tog on" data-toggle="recommend"><span class="led"></span>★ Recommended</button>
               <button class="sc-tog" data-toggle="lightState"><span class="led"></span>Light board</button>
               <button class="sc-tog event" data-toggle="breaking"><span class="led"></span>Breaking incident</button>
@@ -1578,7 +1583,7 @@
     if (p.fartLeft > 0 && currentTurnParts.length === 0) candidates.push("Silent Fart 💨");
     if (p.jokerLeft > 0 && currentTurnParts.length > 0) candidates.push("add Poop Joker 💣");
     else if (p.jokerLeft > 0) candidates.push("add Poop Joker 💣 after an NKO input");
-    return `Options: ${candidates.join(" / ")}\nNKO input style: write NKO, NNKO, NNNKO, or a longer Long NKO such as NNNNNKO. More N means holding the "nnnn" sound longer before "KO".`;
+    return `Options: ${candidates.join(" / ")}\nNKO input style: write NKO, NNKO, NNNKO, or a longer Long NKO such as NNNNNKO. More N means holding the "nnnn" sound longer before "KO".\nRole note: Pull is not a miss. It lowers Pressure and only scores a little less. Push raises Pressure but scores a little more.`;
   }
   function unavailableActionText() {
     const p = players[active];
@@ -1593,6 +1598,8 @@
     applyPlayerNamesFromInputs();
     return [
       'We are about to start "NKO NKO UNCHIYU!".',
+      "",
+      aiTalkStyleText(),
       "",
       buildRulesText(),
       "",
@@ -1621,6 +1628,8 @@
     return [
       'Rules for "NKO NKO UNCHIYU!".',
       "",
+      "[Conversation vibe] This is not just a game about choosing actions. It is a silly chicken-TRPG-style conversation game where players push poop trouble onto each other. Add a short reaction or bit of roleplay, and chat playfully while battling the poop pressure.",
+      "",
       `Current mode: ${cfg().name}`,
       `Active mode tuning: ${activeModeRuleText()}`,
       "",
@@ -1631,7 +1640,7 @@
       "- Maniac Mode lowers Long NKO scoring and makes Personal Poop harsher. It hurts more, but shared-poop buildup is a bit calmer.",
       aiBalanceMode ? "- With AI Balance Mode on, repeated-input score is capped at 4 hits per turn. Hits after the 4th add no score." : "",
       aiBalanceMode ? "- With AI Balance Mode on, Personal Poop penalties are much heavier (x5.0)." : "",
-      "- Long NKO is always Push. Among the three short calls (NKO / NNKO / NNNKO), exactly one is Pull and the other two are Normal. You cannot see which short call is Pull.",
+      "- Long NKO is always Push. Among the three short calls (NKO / NNKO / NNNKO), exactly one is Pull and the other two are Normal. You cannot see which short call is Pull. Pull is not a miss: it lowers Pressure and only scores a little less. Push raises Pressure but scores a little more.",
       "- Personal Pressure rises from your own inputs. Room Air and Shared Poop rise from everyone's inputs and accidents.",
       "- Personal Poop triggers when Personal Pressure x (1 + Room Air modifier) exceeds the limit. It becomes that player's penalty and also adds to Shared Poop.",
       "- Long NKO means holding the N sound for a very long time, for example NNNNNKO. It uses the active mode's Long NKO score multiplier. High risk, low return.",
@@ -1655,15 +1664,14 @@
       actionCandidateText(),
       unavailableActionText(),
       'When using Poop Joker 💣, write "[SECRET] Poop Joker 💣" on the line after the public NKO input. The next-player log ignores the [SECRET] line.',
-      "The full rules were shared already. This time, decide from the board only."
-    ].join("\n");
+      "The full rules were shared already. This time, use the board state."
+    ].filter(Boolean).join("\n");
   }
   function redactSecretJokerText(text) {
     const lines = text.split(/\r?\n/);
     const secretLike = /【秘密】|んちジョーカー|ジョーカー|じょーかー|💣|J\s*[01]|Jが[01]|J[01]/;
     const kept = lines.filter(line => !secretLike.test(line));
     if (kept.length === lines.length) return text;
-    kept.push("[Secret-action lines were removed from the bundled log]");
     return kept.join("\n").trim();
   }
   function recentAiRepliesText() {
@@ -1685,11 +1693,8 @@
       `At the end, include one line exactly as "${players[active].name} action: chosen action".`,
       actionCandidateText(),
       unavailableActionText(),
-      'When using Poop Joker 💣, write "[SECRET] Poop Joker 💣" on the line after the public NKO input. Example:\nGemini action:\nNNNKO\n[SECRET] Poop Joker 💣\nThe next-player log ignores the [SECRET] line.',
-      "",
-      "Latest AI reply:",
-      recentAiRepliesText()
-    ].join("\n");
+      'When using Poop Joker 💣, write "[SECRET] Poop Joker 💣" on the line after the public NKO input. Example:\nGemini action:\nNNNKO\n[SECRET] Poop Joker 💣\nThe next-player log ignores the [SECRET] line.'
+    ].filter(Boolean).join("\n");
   }
   function updateAiFlowStatus() {
     const status = $("aiFlowStatus");
@@ -1745,6 +1750,16 @@
     recommend: true, lightState: false, breaking: false,
     eventsOnly: false, aiThread: false, publicLog: false, rulesOnly: false
   };
+  let talkStyleMode = "long";
+  function aiTalkStyleText() {
+    if (talkStyleMode === "long") {
+      return "[Talk setting: Long replies] Make the reply lively and TRPG-like with board-state reactions, playful table talk, light roleplay, and commentary about Pressure or Room Air. Do not make it a dry action-only answer. Keep the final action line exactly in the requested one-line format.";
+    }
+    if (talkStyleMode === "short") {
+      return "[Talk setting: Short replies] Add one light reaction, then choose the action. Keep the final action line exactly in the requested one-line format.";
+    }
+    return "[Talk setting: Normal replies] Add about 2-3 sentences of playful reaction or roleplay, then choose the action. Keep the final action line exactly in the requested one-line format.";
+  }
 
   const toggleBuilders = {
     recommend: () => buildTurnLogAskText(),
@@ -3043,6 +3058,15 @@
       const key = btn.dataset.toggle;
       copyToggles[key] = !copyToggles[key];
       syncToggleUI();
+    });
+  });
+  document.querySelectorAll("[data-talk-style]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      talkStyleMode = btn.dataset.talkStyle;
+      document.querySelectorAll("[data-talk-style]").forEach(talkBtn => {
+        talkBtn.classList.toggle("on", talkBtn.dataset.talkStyle === talkStyleMode);
+        talkBtn.classList.toggle("off", talkBtn.dataset.talkStyle !== talkStyleMode);
+      });
     });
   });
 
