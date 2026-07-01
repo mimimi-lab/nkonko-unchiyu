@@ -877,6 +877,11 @@
           <div class="sc-accbody">
             <div class="sc-subhead">毎ターン使うやつ</div>
             <div class="sc-toggrid">
+              <button class="sc-tog on" data-talk-style="long"><span class="led"></span>ロング向け</button>
+              <button class="sc-tog" data-talk-style="normal"><span class="led"></span>普通向け</button>
+              <button class="sc-tog" data-talk-style="short"><span class="led"></span>短文返信向け</button>
+            </div>
+            <div class="sc-toggrid">
               <button class="sc-tog on" data-toggle="recommend"><span class="led"></span>★ おすすめ（推奨）</button>
               <button class="sc-tog" data-toggle="lightState"><span class="led"></span>盤面軽量</button>
               <button class="sc-tog event" data-toggle="breaking"><span class="led"></span>事件速報</button>
@@ -1481,7 +1486,8 @@
     if (p.fartLeft > 0 && currentTurnParts.length === 0) candidates.push("すかしっぺ💨");
     if (p.jokerLeft > 0 && currentTurnParts.length > 0) candidates.push("追加で んちジョーカー💣");
     else if (p.jokerLeft > 0) candidates.push("んこ系入力後に追加で んちジョーカー💣");
-    return `候補：${candidates.join(" / ")}`;
+    return `候補：${candidates.join(" / ")}
+役の意味：ひっこみはハズレではありません。腹圧を下げる安全寄りの役で、得点だけ少し低くなります。出る出るは腹圧が上がるかわりに得点が少し高い役です。`;
   }
   function unavailableActionText() {
     const p = players[active];
@@ -1495,7 +1501,9 @@
   function buildFirstGuideText() {
     applyPlayerNamesFromInputs();
     return [
-      "これから「んこ んこ うんちゆ！」を始めます。",
+      "んこんこうんちゆゲームするよ！！！！",
+      "",
+      aiTalkStyleText(),
       "",
       buildRulesText(),
       "",
@@ -1524,6 +1532,8 @@
     return [
       "「んこ んこ うんちゆ！」のルールです。",
       "",
+      "【会話ノリ】行動を選ぶだけのゲームではなく、んこを押し付けあうチキンTRPG風のバカ会話ゲームです。短いリアクションや小芝居を添えて、んこと戦いながら楽しくおしゃべりしましょう。",
+      "",
       "ルール：",
       "・3人プレイ。ボタン長押しで「んこ」「んーこ」「んーーこ」「長んこ」を出す。長いほど得点が高いが腹圧も上がる。",
       "・女子会モードは事故が起きやすく、場うんちも進みやすい短めパーティー用。",
@@ -1531,7 +1541,7 @@
       "・んこ狂人モードは長んこ得点が低く、個人うんち減点が重い耐久寄りモード。漏らすと痛いが、場うんちペースは少し落ち着く。",
       aiBalanceMode ? "・AI調整モードON中は、1ターンの連打点は4発目ぶんまで。5発目以降はスコアに乗らない。" : "",
       aiBalanceMode ? "・AI調整モードON中は、個人うんち減点がかなり重い（×5.0）。" : "",
-      "・長んこは毎ターン「出る出る」固定。短い3種（んこ/んーこ/んーーこ）のうち1つだけが「ひっこみ」、残り2つが「ふつう」になる。短い3種のどれがひっこみかは見えない。",
+      "・長んこは毎ターン「出る出る」固定。短い3種（んこ/んーこ/んーーこ）のうち1つだけが「ひっこみ」、残り2つが「ふつう」になる。短い3種のどれがひっこみかは見えない。ひっこみはハズレではなく、腹圧を下げる安全寄りの役（得点は少し低い）。出る出るは腹圧が上がるかわりに得点が少し高い。",
       "・個人腹圧は自分の入力で上がる。部屋の空気と場うんち蓄積は全員の入力や事故で上がる。",
       "・個人うんち！判定：個人腹圧 ×（1 + 部屋の空気補正）が限界を超えたら発生。本人の減点（×1.5倍）になり、場うんち蓄積にも溜まる。",
       "・長んこ（ダッシュ3個以上）の得点は×0.5。ハイリスク・ローリターンです。",
@@ -1555,15 +1565,14 @@
       actionCandidateText(),
       unavailableActionText(),
       "んちジョーカー💣を使う時は、公開用のんこ系入力の次行に「【秘密】んちジョーカー💣」と書いてください。次プレイヤー用ログでは【秘密】行を拾いません。",
-      "※ルール全文は初回だけ共有済みです。今回は盤面だけ見て選んでください。"
-    ].join("\n");
+      "※ルール全文は初回だけ共有済みです。今回は盤面を見て選んでください。"
+    ].filter(Boolean).join("\n");
   }
   function redactSecretJokerText(text) {
     const lines = text.split(/\r?\n/);
     const secretLike = /【秘密】|んちジョーカー|ジョーカー|じょーかー|💣|J\s*[01]|Jが[01]|J[01]/;
     const kept = lines.filter(line => !secretLike.test(line));
     if (kept.length === lines.length) return text;
-    kept.push("【秘密行動に関する行はログ同梱から伏せています】");
     return kept.join("\n").trim();
   }
   function recentAiRepliesText() {
@@ -1585,11 +1594,8 @@
       `返答の最後に必ず「${players[active].name}の行動：選んだ行動」と1行で書いてください。`,
       actionCandidateText(),
       unavailableActionText(),
-      "んちジョーカー💣を使う時は、公開用のんこ系入力の次行に「【秘密】んちジョーカー💣」と書いてゆ。例：\nGeminiの行動：\nんーーこ\n【秘密】んちジョーカー💣\n次プレイヤー用ログでは【秘密】行を拾わないゆ。",
-      "",
-      "直近AI返答：",
-      recentAiRepliesText()
-    ].join("\n");
+      "んちジョーカー💣を使う時は、公開用のんこ系入力の次行に「【秘密】んちジョーカー💣」と書いてゆ。例：\nGeminiの行動：\nんーーこ\n【秘密】んちジョーカー💣\n次プレイヤー用ログでは【秘密】行を拾わないゆ。"
+    ].filter(Boolean).join("\n");
   }
   function updateAiFlowStatus() {
     const status = $("aiFlowStatus");
@@ -1645,6 +1651,16 @@
     recommend: true, lightState: false, breaking: false,
     eventsOnly: false, aiThread: false, publicLog: false, rulesOnly: false
   };
+  let talkStyleMode = "long";
+  function aiTalkStyleText() {
+    if (talkStyleMode === "long") {
+      return "【会話設定：ロング向け】盤面へのリアクション、小芝居、軽いツッコミ、腹圧や部屋の空気への実況を入れて、会話を楽しむTRPGっぽくにぎやかに返してください。行動だけの事務回答にしないでください。最後の行動行だけは必ず指定どおり1行で書いてください。";
+    }
+    if (talkStyleMode === "short") {
+      return "【会話設定：短文返信向け】軽いリアクションを1つ添えて、すぐ行動を選んでください。最後の行動行だけは必ず指定どおり1行で書いてください。";
+    }
+    return "【会話設定：普通向け】2〜3文くらいのリアクションや茶番を添えて、楽しく行動を選んでください。最後の行動行だけは必ず指定どおり1行で書いてください。";
+  }
 
   const toggleBuilders = {
     recommend: () => buildTurnLogAskText(),
@@ -2926,6 +2942,15 @@
       const key = btn.dataset.toggle;
       copyToggles[key] = !copyToggles[key];
       syncToggleUI();
+    });
+  });
+  document.querySelectorAll("[data-talk-style]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      talkStyleMode = btn.dataset.talkStyle;
+      document.querySelectorAll("[data-talk-style]").forEach(talkBtn => {
+        talkBtn.classList.toggle("on", talkBtn.dataset.talkStyle === talkStyleMode);
+        talkBtn.classList.toggle("off", talkBtn.dataset.talkStyle !== talkStyleMode);
+      });
     });
   });
 
